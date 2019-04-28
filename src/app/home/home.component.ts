@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit {
   showSpinner = false;
   showData = false;
   spinner: string;
-  searchText:string;
+  searchText: string;
 
   constructor(private bankService: GetBanksService) { }
 
@@ -36,16 +36,29 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  bankDetails(event:any) {
+  bankDetails(event: any) {
     this.showSpinner = true;
     this.showData = false;
-    this.bankService.getBankMethod(this.city).subscribe(data => {
-      console.log("data in bank details", JSON.stringify(data));
-      this.bankDetail = <bankDetail[]>data;
-      localStorage.setItem('bankdetails', JSON.stringify(this.bankDetail));
+    console.log(this.city, JSON.stringify(localStorage.getItem(this.city)));
+
+    if (JSON.parse(localStorage.getItem(this.city))) {
+      console.log("inside if");
+
+      this.bankDetail = JSON.parse(localStorage.getItem(this.city));
       this.showSpinner = false;
       this.showData = true;
-    })
-    console.log(this.city);
+    } else {
+      console.log("inside else");
+
+      this.bankService.getBankMethod(this.city).subscribe(data => {
+        console.log("data in bank details", JSON.stringify(data));
+        this.bankDetail = <bankDetail[]>data;
+        localStorage.setItem('bankdetails', JSON.stringify(this.bankDetail));
+        localStorage.setItem(this.city, JSON.stringify(this.bankDetail));
+        this.showSpinner = false;
+        this.showData = true;
+      })
+      console.log(this.city);
+    }
   }
 }
