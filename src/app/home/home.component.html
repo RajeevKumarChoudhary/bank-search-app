@@ -1,0 +1,79 @@
+<div class="container-fluid">
+  <div class="row header">
+    <div class="col-sm-4"></div>
+    <div class="col-sm-4">
+      <h2 style="font-weight:bolder; color: white">BANK SEARCH DETAILS</h2>
+    </div>
+    <div class="col-sm-4"></div>
+  </div>
+  <div class="row body">
+    <div class="col-sm-4"></div>
+    <div class="col-sm-4">
+      <div class="row">
+        <div class="col-sm-6">
+          <div>
+            <label style="font-weight:bold">Select City</label>
+            <select class="form-control" style="border-radius: 10px" [(ngModel)]="city" (change)="bankDetails($event)">
+              <option>MUMBAI</option>
+              <option>KOLKATA</option>
+              <option>DELHI</option>
+              <option>CHENNAI</option>
+              <option>PATNA</option>
+              <option>BANGALORE</option>
+              <option>JAIPUR</option>
+              <option>RAIPUR</option>
+              <option>CHANDIGARH</option>
+              <option>HYDERABAD</option>
+              <option>NAGPUR</option>
+              <option>PUNE</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-sm-6 search">
+          <input style="border-radius: 10px" [(ngModel)]="searchText" class="form-control" placeholder="Search"
+            id="search">
+        </div>
+      </div>
+    </div>
+    <div class="text-center">
+      <div class="col-xs-2" style="padding-left: 200px;">
+        <label class="label-control" style="font-weight: bold">Select Page Size</label>
+        <select style="border-radius: 10px" class="form-control input-sm results-page" [(ngModel)]="rowsOnPage">
+          <option *ngFor="let row of rowsOnPageSet" [value]="row">{{ row }}</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-sm-4"></div>
+    <br><br>
+    <div class="row" style="background-color: #F2F2F2; width: 101%">
+      <div class="col-sm-12">
+        <table style="width: 99%" class="table table-striped">
+          <thead>
+            <tr>
+              <th style="width:20%">IFSC</th>
+              <th style="width:20%">Bank Name</th>
+              <th style="width:20%">Branch</th>
+              <th style="width:20%">Address</th>
+              <th style="width:20%">District</th>
+            </tr>
+          </thead>
+          <div class="spinner" *ngIf="showSpinner">
+            <br><br>
+            <mat-spinner></mat-spinner>
+          </div>
+          <tbody *ngIf="showData">
+            <tr
+              *ngFor="let detail of bankDetail | filter : searchText | paginate: { itemsPerPage: rowsOnPage, currentPage: p }">
+              <td style="width:20%">{{detail.ifsc}}</td>
+              <td style="width:20%">{{detail.bank_name}}</td>
+              <td style="width:20%">{{detail.branch}}</td>
+              <td style="width:20%">{{detail.address}}</td>
+              <td style="width:20%">{{detail.district}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <pagination-controls (pageChange)="p = $event"></pagination-controls>
+</div>
