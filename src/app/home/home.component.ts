@@ -16,7 +16,7 @@ export class HomeComponent implements OnInit {
   public rowsOnPageSet = [5, 15, 30, 50, 100, 500, 1000];
   p;
   city;
-  bankDetail: bankDetail;
+  bankDetail: bankDetail[] = [];
   showSpinner = false;
   showData = false;
   spinner: string;
@@ -25,6 +25,7 @@ export class HomeComponent implements OnInit {
   constructor(private bankService: GetBanksService) { }
 
   ngOnInit() {
+    this.bankDetail = this.bankService.getBankDetaiObj();
     console.log(JSON.parse(localStorage.getItem('bankdetails')) !== null);
     if (JSON.parse(localStorage.getItem('bankdetails'))) {
       this.bankDetail = JSON.parse(localStorage.getItem('bankdetails'));
@@ -40,7 +41,7 @@ export class HomeComponent implements OnInit {
     this.showData = false;
     this.bankService.getBankMethod(this.city).subscribe(data => {
       console.log("data in bank details", JSON.stringify(data));
-      this.bankDetail = data;
+      this.bankDetail = <bankDetail[]>data;
       localStorage.setItem('bankdetails', JSON.stringify(this.bankDetail));
       this.showSpinner = false;
       this.showData = true;
