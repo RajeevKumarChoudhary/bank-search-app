@@ -14,12 +14,13 @@ export class HomeComponent implements OnInit {
   collection = [];
   rowsOnPage = 5;
   public rowsOnPageSet = [5, 15, 30, 50, 100, 500, 1000];
-
+  p;
   city;
   bankDetail: bankDetail;
   showSpinner = false;
   showData = false;
   spinner: string;
+  searchText:string;
 
   constructor(private bankService: GetBanksService) { }
 
@@ -34,7 +35,7 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  bankDetails() {
+  bankDetails(event:any) {
     this.showSpinner = true;
     this.showData = false;
     this.bankService.getBankMethod(this.city).subscribe(data => {
